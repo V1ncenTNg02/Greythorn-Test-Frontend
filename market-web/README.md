@@ -68,3 +68,21 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+Language and tools used:
+Frontend: React 
+Backend: NodeJS Express CORS
+Database: MongoDB 
+
+25: Get data ready in backend
+Design backend algo -> implement these algos
+Decide data set to transmit -> implement API in backend for data transmission
+Drawing Algo in Frontend
+Search function
+Comment and understanding code
+Deployment
+
+Bug to fix:
+1. Data retrival
+2. Search Function
