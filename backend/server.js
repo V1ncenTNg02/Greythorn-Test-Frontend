@@ -3,30 +3,38 @@ const mongoose = require('mongoose');
 const app = express();
 const path = require('path');
 const axios = require('axios');
+const cors = require('cors');
+app.use(cors());
 
 const PORT = process.env.PORT || 5000;
+const coinNames = ["Aave", "BinanceCoin",
+  "Bitcoin", "Cardano", "ChainLink", "Cosmos", "CryptocomCoin", "Dogecoin",
+  "EOS", "Ethereum", "Iota", "Litecoin", "Monero", "NEM", "Polkadot", "Solana",
+  "Stellar", "Tether", "Tron", "USDCoin", "Uniswap", "WrappedBitcoin", "XRP"]
 
 
 //Connect to MongoDB
-mongoose.connect('mongodb+srv://VincentNg:WuYinghong.0323@marketdata.j3apuea.mongodb.net/?retryWrites=true&w=majority',{useNewUrlParser: true, useUnifiedTopology:true})
-    .then(() => console.log('MongoDB Connected'))
-    .catch(err => console.log('Cannot connect to MongoDB'));
+mongoose.connect('mongodb+srv://VincentNg:WuYinghong.0323@marketdata.j3apuea.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log('Cannot connect to MongoDB'));
 
 
 const schema = new mongoose.Schema({
-    _id: String,
-    SNo: Number,
-    Symbol: String,
-    Date: Date,
-    High: Number,
-    Low: Number,
-    Open:Number,
-    Close:Number,
-    Volume: Number,
-    Marketcap: Number
+  _id: String,
+  SNo: Number,
+  Name: String,
+  Symbol: String,
+  Date: Date,
+  High: Number,
+  Low: Number,
+  Open: Number,
+  Close: Number,
+  Volume: Number,
+  Marketcap: Number
 });
 
 const coinModels = {};
+
 coinNames.forEach(coinName => {
   coinModels[coinName] = mongoose.model(coinName, schema, coinName);
 });
@@ -50,25 +58,26 @@ app.get('/', (req, res) => {
 
 app.get('/api/all-data', async (req, res) => {
   try {
-      // Prepare an array of promises, each fetching data from a collection
-      const dataPromises = Object.keys(coinModels).map(key => {
-          return coinModels[key].find().then(data => {
-              return { name: key, data: data };
-          });
+    // Prepare an array of promises, each fetching data from a collection
+    const dataPromises = Object.keys(coinModels).map(key => {
+      return coinModels[key].find().then(data => {
+        return { name: key, data: data };
       });
+    });
 
-      // Wait for all promises to resolve
-      const results = await Promise.all(dataPromises);
+    // Wait for all promises to resolve
+    const results = await Promise.all(dataPromises);
 
-      // Transform the array of results into an object
-      const allData = results.reduce((acc, curr) => {
-          acc[curr.name] = curr.data;
-          return acc;
-      }, {});
+    // Transform the array of results into an object
+    const allData = results.reduce((acc, curr) => {
+      acc[curr.name] = curr.data;
+      return acc;
+    }, {});
 
-      res.json(allData);
+    res.json(allData);
+    console.log(allData);
   } catch (err) {
-      res.status(500).send('Error retrieving data');
+    res.status(500).send('Error retrieving data');
   }
 });
 
@@ -114,8 +123,3 @@ app.listen(PORT, () => {
 //         console.log(error);
 //     });
 
-
-const coinNames = ["Aave","BinanceCoin",
-"Bitcoin","Cardano", "ChainLink","Cosmos","CryptocomCoin","Dogecoin",
-"EOS","Ethereum","Iota","Litecoin","Monero","NEM", "Polkadot", "Solana",
-"Stellar","Tether","Tron","USDCoin","Uniswap","WrappedBitcoin","XRP"]

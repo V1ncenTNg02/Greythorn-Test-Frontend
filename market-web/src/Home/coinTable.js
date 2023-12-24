@@ -1,6 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-export default function stockTable({}) {
+export default function CoinTable({}) {
+
+  // useEffect(() => {
+  //   // Function to fetch data from the backend
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch('http://localhost:5000/api/all-data');
+  //       const data = await response.json();
+
+  //       // Assuming the backend sends data in the format { "Bitcoin": [{...}, {...}], "Ethereum": [{...}, {...}] }
+  //       console.log(data.Bitcoin);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+      
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/all-data')
+        .then(response => response.json())
+        .catch(error => console.error('Error fetching data:', error));
+}, []);
+
   return (
     <div id = "tableContainer">
       <table id = "coinTable">
