@@ -75,7 +75,7 @@ Frontend: React
 Backend: NodeJS Express CORS
 Database: MongoDB 
 
-25: Get data ready in backend
+25: Get data ready in backend  (done and works well)
 Design backend algo -> implement these algos
 Decide data set to transmit -> implement API in backend for data transmission
 Drawing Algo in Frontend
@@ -84,5 +84,7 @@ Comment and understanding code
 Deployment
 
 Bug to fix:
-1. Data retrival
-2. Search Function
+1. Data retrival (fixed)
+2. Search Function ()
+3. Can only fetch 1000 documents from MongoDB
+4. Data retrival for detail page doesn't work

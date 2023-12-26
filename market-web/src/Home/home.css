@@ -16,7 +16,7 @@
 }
 
 input{
-    width: 10%;
+    width: 15%;
     height: auto;
     border-radius: 10px;
     padding: 5px 10px;
@@ -47,7 +47,7 @@ th{
   
 tr{
     border-bottom: 1px solid rgba(128, 128, 128,30%);
-    height: 5vh;
+    height: 9vh;
 }
 
 #tableHead{
@@ -68,3 +68,24 @@ th {
     color: white; 
 }
 
+#buttonContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-around;
+    width: 15vw;
+    
+}
+
+.homeButton{
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    bottom: 5vh;
+    right: 5vw;
+    transition: 0.5s ease-out;
+}
+
+.homeButton:hover{
+    transform: scale(1.5);
+}

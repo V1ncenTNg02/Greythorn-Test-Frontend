@@ -1,36 +1,48 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import HomeIcon from '../resource/home.png'
 
-export default function CoinTable({}) {
+export default function CoinTable() {
+  const [coins, setCoins] = useState([]);
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   // Function to fetch data from the backend
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch('http://localhost:5000/api/all-data');
-  //       const data = await response.json();
+  const handleRowClick = (coinName) => {
+    navigate(`/coin/${coinName}`);
+  };
 
-  //       // Assuming the backend sends data in the format { "Bitcoin": [{...}, {...}], "Ethereum": [{...}, {...}] }
-  //       console.log(data.Bitcoin);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-      
-  //   };
-
-  //   fetchData();
-  // }, []);
+  const handleImageClick = () => {
+    navigate('/');
+  }
 
   useEffect(() => {
     fetch('http://localhost:5000/api/all-data')
-        .then(response => response.json())
-        .catch(error => console.error('Error fetching data:', error));
-}, []);
+      .then(response => response.json())
+      .then(data => {
+        const coinsArray = Object.keys(data).map((key) => {
+          return {
+            name: key,
+            price: data[key].price,
+            oneDay: data[key].oneDay,
+            sevenDay: data[key].sevenDay,
+            oneMonth: data[key].oneMonth,
+            oneDayVolume: data[key].oneDayVolume,
+            marketCap: data[key].marketCap
+          };
+        });
+
+        // Sort the coins array based on market cap
+        coinsArray.sort((a, b) => parseFloat(b.marketCap) - parseFloat(a.marketCap));
+
+        setCoins(coinsArray);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
 
   return (
-    <div id = "tableContainer">
-      <table id = "coinTable">
+    <div id="tableContainer">
+      <table id="coinTable">
         <thead>
-          <tr id = "tableHead">
+          <tr id="tableHead">
             <th>Index</th>
             <th>Name</th>
             <th>Price</th>
@@ -42,26 +54,21 @@ export default function CoinTable({}) {
           </tr>
         </thead>
         <tbody>
-          {stock.map((stock) => (
-            <tr key={stock.name} className='tableRow'>
-                <td>{stock.index}</td>
-                <td>{stock.name}</td>
-                <td>{stock.price}</td>
-                <td>{stock.oneDay}</td>
-                <td>{stock.sevenDay}</td>
-                <td>{stock.oneMonth}</td>
-                <td>{stock.oneDayVolume}</td>
-                <td>{stock.marketCap}</td>
+          {coins.map((coin, index) => (
+            <tr key={coin.name} className='tableRow' onClick={() => handleRowClick(coin.name)}>
+              <td>{index + 1}</td> {/* Use the index from map function */}
+              <td>{coin.name}</td>
+              <td>{coin.price}</td>
+              <td>{coin.oneDay}</td>
+              <td>{coin.sevenDay}</td>
+              <td>{coin.oneMonth}</td>
+              <td>{coin.oneDayVolume}</td>
+              <td>{coin.marketCap}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      <img className = 'homeButton' src={HomeIcon} alt = 'HomeIcon' onClick={() => handleImageClick( )}></img>
     </div>
-  )
+  );
 }
-
-
-const stock = [
-  {name: "Bitcoin", price: "1,000,000", oneDay: "1%", sevenDay: "2%", oneMonth: "3%", oneDayVolume: "1,000,000", marketCap: "1,000,000,000"},
-  {name: "Ethereum", price: "1,000,000", oneDay: "1%", sevenDay: "2%", oneMonth: "3%", oneDayVolume: "1,000,000", marketCap: "1,000,000,000"}
-]
