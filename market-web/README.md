@@ -71,7 +71,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
 Language and tools used:
-Frontend: React 
+Frontend: React chartjsnpm
 Backend: NodeJS Express CORS
 Database: MongoDB 
 

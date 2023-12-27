@@ -1,0 +1,106 @@
+.homeButton{
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    bottom: 5vh;
+    right: 5vw;
+    transition: 0.5s ease-out;
+}
+
+.homeButton:hover{
+    transform: scale(1.5);
+}
+
+.dropdown {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    z-index: 1000;
+    right: 2vw;
+    position:fixed;
+    width: 200px; /* Adjust as needed */
+}
+
+.dropdown-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background-color: #f6f6f6;
+}
+
+#coinName, #priceSection{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+#Symbol, #priceChange{
+    margin-left: 2%;
+}
+
+#infoSection{
+    margin-left: 3%;
+    margin-top:5%;
+    width: 60 vw;
+    height:40 vw;
+}
+
+#rangeBar{
+    position: relative;
+    width: 40%;
+    height: 20px;
+    background-color: lightgrey;
+    border-radius: 5px;
+    margin-top: 2vh;
+}
+
+#changeTable{
+    width: 70%;
+    margin-left: 14%;
+    margin-top: 5vh;
+}
+
+#Name{
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#Symbol{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+#highLowContainer{
+    display: flex;
+    flex-direction: row;
+    width: 40%;
+    justify-content: space-between;
+}
+
+#chartSection{
+    margin-top: 5vh;
+}
+
+#chartContainer {
+    width: 80%; 
+    height: 60vh; 
+    margin: auto; 
+    display: flex;
+    justify-content: center;
+}
+
+
+#conditions{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 3vw;
+}

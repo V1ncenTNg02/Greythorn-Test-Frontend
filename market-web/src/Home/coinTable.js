@@ -14,6 +14,13 @@ export default function CoinTable() {
     navigate('/');
   }
 
+  const getPercentageChangeStyle = (change) => {
+    const value = parseFloat(change);
+    return {
+      color: value > 0 ? 'green' : value < 0 ? 'red' : 'black', // green if positive, red if negative, black if zero or invalid
+    };
+  };
+
   useEffect(() => {
     fetch('http://localhost:5000/api/all-data')
       .then(response => response.json())
@@ -59,9 +66,9 @@ export default function CoinTable() {
               <td>{index + 1}</td> {/* Use the index from map function */}
               <td>{coin.name}</td>
               <td>{coin.price}</td>
-              <td>{coin.oneDay}</td>
-              <td>{coin.sevenDay}</td>
-              <td>{coin.oneMonth}</td>
+              <td style={getPercentageChangeStyle(coin.oneDay)}>{coin.oneDay}</td>
+              <td style={getPercentageChangeStyle(coin.sevenDay)}>{coin.sevenDay}</td>
+              <td style={getPercentageChangeStyle(coin.oneMonth)}>{coin.oneMonth}</td>
               <td>{coin.oneDayVolume}</td>
               <td>{coin.marketCap}</td>
             </tr>
