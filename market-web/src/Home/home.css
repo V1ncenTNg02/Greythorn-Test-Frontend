@@ -16,7 +16,7 @@
 }
 
 input{
-    width: 15%;
+    width: 150px;
     height: auto;
     border-radius: 10px;
     padding: 5px 10px;
@@ -87,19 +87,21 @@ th {
 }
 
 .dropdown {
-    position: absolute;
     background-color: white;
     border: 1px solid #ddd;
     z-index: 1000;
     right: 2vw;
     position:fixed;
-    width: 200px; /* Adjust as needed */
+    width: 180px; 
+    margin-right:1.5vw;
 }
 
 .dropdown-item {
     padding: 10px;
     border-bottom: 1px solid #ddd;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 .dropdown-item:last-child {
@@ -108,4 +110,26 @@ th {
 
 .dropdown-item:hover {
     background-color: #f6f6f6;
+}
+
+.dropdown-item a {
+    text-decoration: none; 
+}
+
+#navBar{
+    z-index: 1000;
+}
+
+.iconImage{
+    margin-right: 8px;
+    height: 25px;
+    width: 25px;
+}
+
+#iconName{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 5px;
+    margin-top:1.5vh;
 }

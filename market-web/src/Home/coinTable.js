@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import HomeIcon from '../resource/home.png'
+import HomeIcon from '../resource/home.png';
 
 export default function CoinTable() {
   const [coins, setCoins] = useState([]);
@@ -17,9 +17,10 @@ export default function CoinTable() {
   const getPercentageChangeStyle = (change) => {
     const value = parseFloat(change);
     return {
-      color: value > 0 ? 'green' : value < 0 ? 'red' : 'black', // green if positive, red if negative, black if zero or invalid
+      color: value > 0 ? 'green' : value < 0 ? 'red' : 'black',
     };
   };
+  
 
   useEffect(() => {
     fetch('http://localhost:5000/api/all-data')
@@ -33,13 +34,12 @@ export default function CoinTable() {
             sevenDay: data[key].sevenDay,
             oneMonth: data[key].oneMonth,
             oneDayVolume: data[key].oneDayVolume,
-            marketCap: data[key].marketCap
+            marketCap: data[key].marketCap,
+            icon: require(`../resource/icons/${key}.webp`)                   
           };
         });
 
-        // Sort the coins array based on market cap
         coinsArray.sort((a, b) => parseFloat(b.marketCap) - parseFloat(a.marketCap));
-
         setCoins(coinsArray);
       })
       .catch(error => console.error('Error fetching data:', error));
@@ -63,8 +63,11 @@ export default function CoinTable() {
         <tbody>
           {coins.map((coin, index) => (
             <tr key={coin.name} className='tableRow' onClick={() => handleRowClick(coin.name)}>
-              <td>{index + 1}</td> {/* Use the index from map function */}
-              <td>{coin.name}</td>
+              <td>{index + 1}</td>
+              <td id = 'iconName'>
+                <img src={coin.icon} alt={`${coin.name} icon`} className='iconImage' />
+                {coin.name}
+              </td>
               <td>{coin.price}</td>
               <td style={getPercentageChangeStyle(coin.oneDay)}>{coin.oneDay}</td>
               <td style={getPercentageChangeStyle(coin.sevenDay)}>{coin.sevenDay}</td>
@@ -75,7 +78,7 @@ export default function CoinTable() {
           ))}
         </tbody>
       </table>
-      <img className = 'homeButton' src={HomeIcon} alt = 'HomeIcon' onClick={() => handleImageClick( )}></img>
+      <img className='homeButton' src={HomeIcon} alt='HomeIcon' onClick={() => handleImageClick()}></img>
     </div>
   );
 }

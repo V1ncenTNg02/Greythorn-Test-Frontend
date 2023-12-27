@@ -18,7 +18,7 @@
     z-index: 1000;
     right: 2vw;
     position:fixed;
-    width: 200px; /* Adjust as needed */
+    width: 200px; 
 }
 
 .dropdown-item {
@@ -66,6 +66,7 @@
     width: 70%;
     margin-left: 14%;
     margin-top: 5vh;
+    margin-bottom: 10vh;
 }
 
 #Name{
@@ -91,8 +92,8 @@
 }
 
 #chartContainer {
-    width: 80%; 
-    height: 60vh; 
+    width: 85%; 
+    height: 50vh; 
     margin: auto; 
     display: flex;
     justify-content: center;
@@ -103,4 +104,22 @@
     display: flex;
     justify-content: flex-end;
     margin-right: 3vw;
+}
+
+#navBar{
+    z-index: 1000;
+}
+
+.iconImage{
+    margin-right: 8px;
+    height: 30px;
+    width: 30px;
+}
+
+th{
+    background-color: rgba(207,239,183,0.8);
+}
+
+td{
+    background-color: rgba(207,239,183,0.2);
 }

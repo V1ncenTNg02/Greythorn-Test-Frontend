@@ -44,6 +44,16 @@ export default function Home() {
         };
     }, []);
 
+    const getCoinIcon = (coinName) => {
+        try {
+            // Dynamically require the image based on the coin name
+            return require(`../resource/icons/${coinName}.webp`);
+        } catch (e) {
+            // If the image does not exist, return a default image or null
+            return null;
+        }
+    };
+
     return (
         <div>
             <NavBar onSearch={(term) => setSearchTerm(term)} />
@@ -52,6 +62,11 @@ export default function Home() {
                     {filteredResults.map(coin => (
                         <div key={coin} className="dropdown-item">
                             <Link to={`/coin/${coin}`}>
+                                <img 
+                                    src={getCoinIcon(coin)} 
+                                    alt={coin} 
+                                    style={{ marginRight: '10px', width: '20px', height: '20px' }}
+                                />
                                 {coin}
                             </Link>
                         </div>

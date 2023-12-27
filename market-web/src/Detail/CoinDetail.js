@@ -13,13 +13,19 @@ export default function CoinDetail() {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredResults, setFilteredResults] = useState([]);
     const dropdownRef = useRef(null);
+    const [timeRange, setTimeRange] = useState('7days'); // state for selected time range
+    const [allData, setAllData] = useState(null); 
 
     const coins = ["Aave", "BinanceCoin", "Bitcoin", "Cardano", "ChainLink", "Cosmos", "CryptocomCoin", "Dogecoin", "EOS", "Ethereum", "Iota", "Litecoin", "Monero", "NEM", "Polkadot", "Solana", "Stellar", "Tether", "Tron", "USDCoin", "Uniswap", "WrappedBitcoin", "XRP"];
 
+
     useEffect(() => {
-        fetch(`http://localhost:5000/api/coin/${name}?timeRange=7days`)
+        fetch(`http://localhost:5000/api/coin/${name}?timeRange=all`)
             .then(response => response.json())
-            .then(data => setCoinData(data))
+            .then(data => {
+                setCoinData(data); // Set the initially displayed data
+                setAllData(data); // Store all data for later filtering
+            })
             .catch(error => console.error('Error fetching coin data:', error));
 
         if (searchTerm !== '') {
@@ -46,6 +52,11 @@ export default function CoinDetail() {
         };
     }, [name, searchTerm]); // Dependency array includes 'name' and 'searchTerm'
 
+    if (!coinData || !coinData.history || coinData.history.length === 0) {
+        // Render a loading message or return null if data is not yet loaded
+        return <div>Loading...</div>;
+    }
+    
     const handleImageClick = () => {
         navigate('/');
     }
@@ -62,22 +73,71 @@ export default function CoinDetail() {
         };
       };
 
-    const prepareChartData = (history) => {
-        const chartLabels = history.map(item => item.date.split(' ')[0]); // Extract just the date part
-        const chartData = history.map(item => item.price);
+      const handleTimeRangeChange = (newTimeRange) => {
+        setTimeRange(newTimeRange);
+        if (allData && allData.history) {
+            const filteredHistory = filterDataByTimeRange(allData.history, newTimeRange);
+            setCoinData({ ...allData, history: filteredHistory });
+        }
+    };
+
+    const filterDataByTimeRange = (history, selectedTimeRange) => {
+        switch (selectedTimeRange) {
+            case '7days':
+                return history.slice(0, 7);
+            case '1month':
+                return history.slice(0, 30);
+            case '3months':
+                return history.slice(0, 90);
+            case '1year':
+                return history.slice(0, 365);
+            default:
+                return history;
+        }
+    };
     
+    const currentPrice = coinData.history[0].price;
+
+    const getIconPath = (coinName) => {
+        try {
+            return require(`../resource/icons/${coinName}.webp`);
+        } catch {
+            // Return a default icon or null if specific icon not found
+            return null;
+        }
+    };
+
+
+
+    // Function to prepare chart data based on the selected time range
+    const prepareChartData = (history) => {
+        const chartLabels = history.map(item => item.date.split(' ')[0]);
+        const chartData = history.map(item => item.price);
+
         return {
-            labels: chartLabels.reverse(), // Reverse to show the earliest date first
-            datasets: [
-                {
-                    label: 'Price',
-                    data: chartData.reverse(), // Reverse to match the labels order
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
-                }
-            ]
+            labels: chartLabels.reverse(),
+            datasets: [{
+                label: 'Price',
+                data: chartData.reverse(),
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
         };
     };
+
+
+    const getCoinIcon = (coinName) => {
+        try {
+            // Dynamically require the image based on the coin name
+            return require(`../resource/icons/${coinName}.webp`);
+        } catch (e) {
+            // If the image does not exist, return a default image or null
+            return null;
+        }
+    };
+
+    
+    
 
     return (
         <div id="detailSection">
@@ -87,6 +147,11 @@ export default function CoinDetail() {
                     {filteredResults.map(coin => (
                         <div key={coin} className="dropdown-item">
                             <Link to={`/coin/${coin}`}>
+                                <img 
+                                    src={getCoinIcon(coin)} 
+                                    alt={coin} 
+                                    style={{ marginRight: '10px', width: '20px', height: '20px' }}
+                                />
                                 {coin}
                             </Link>
                         </div>
@@ -102,18 +167,23 @@ export default function CoinDetail() {
                 {coinData && (
                     <>
                         <div id="coinName">
+                        <img 
+                            src={getIconPath(name)} 
+                            alt={name} 
+                            className='iconImage'
+                        />
                             <p id="Name">{name}</p>
                             <p id="Symbol">{coinData.symbol}</p>
                         </div>
                         <div id="priceSection">
-                            <p id="Price">{coinData.history[0].price}</p>
+                            <p id="Price">{currentPrice}</p>
                             <p id="priceChange" style={getPercentageChangeStyle(coinData['1dChange'])}>{coinData['1dChange']}</p>
                         </div>
                         <div id="rangeBar">
                             <div style={{ 
                                 height: '100%', 
                                 width: `${calculateWidth()}%`, 
-                                background: 'linear-gradient(to right, yellow, green)' 
+                                background: 'linear-gradient(to right, yellow, green)'
                             }}></div>
                         </div>
                         <div id = 'highLowContainer'>
@@ -123,21 +193,15 @@ export default function CoinDetail() {
                     </>
                 )}
             </div>
-            <div id="chartSection">
-                {/* <div id="chartContainer">
-                    <header></header>
-                    <div id="condition"></div>
-                    <figure id="chart"></figure>
-                    <div id="timeSpan"></div>
-                </div> */}
+            <div id="chart">
                 <div id="chartSection">
                     <div id='conditions'>
-                        <button>7days</button>
-                        <button>1month</button>
-                        <button>3months</button>
-                        <button>1year</button>
+                        <button onClick={() => handleTimeRangeChange('7days')}>7days</button>
+                        <button onClick={() => handleTimeRangeChange('1month')}>1month</button>
+                        <button onClick={() => handleTimeRangeChange('3months')}>3months</button>
+                        <button onClick={() => handleTimeRangeChange('1year')}>1year</button>
                     </div>
-                    {coinData && (
+                    {coinData && coinData.history && (
                         <div id="chartContainer">
                             <Line data={prepareChartData(coinData.history)} />
                         </div>

@@ -162,8 +162,7 @@ app.get('/api/coin/:name', async (req, res) => {
     coinData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
 
     // Extract the data based on the time range
-    const startDate = calculateStartDate(coinData, timeRange);
-    const filteredData = coinData.filter(d => new Date(d.Date) >= startDate);
+    const filteredData = filterDataByTimeRange(coinData, timeRange);
 
     // Calculate percentage changes for various intervals
     const percentageChanges = calculatePercentageChanges(coinData, filteredData[0]?.Close);
@@ -171,9 +170,9 @@ app.get('/api/coin/:name', async (req, res) => {
     // Prepare response data
     const responseData = {
       name: name,
-      symbol: filteredData[0]?.Symbol || 'N/A', // Assuming symbol is in the data
-      high: Math.max(...filteredData.map(d => d.High)),
-      low: Math.min(...filteredData.map(d => d.Low)),
+      symbol: filteredData[0]?.Symbol || 'N/A',
+      high: coinData[0].High,
+      low: coinData[0].Low,
       history: filteredData.map(d => ({ date: d.Date, price: d.Close })),
       ...percentageChanges
     };
@@ -185,24 +184,25 @@ app.get('/api/coin/:name', async (req, res) => {
   }
 });
 
-function calculateStartDate(data, timeRange) {
-  if (!data.length) return new Date();
-
-  const latestDate = new Date(data[0].Date);
+function filterDataByTimeRange(data, timeRange) {
+  let startDate = new Date();
   switch (timeRange) {
     case '7days':
-      latestDate.setDate(latestDate.getDate() - 7);
+      startDate.setDate(startDate.getDate() - 7);
       break;
     case '1month':
-      latestDate.setMonth(latestDate.getMonth() - 1);
+      startDate.setMonth(startDate.getMonth() - 1);
+      break;
+    case '3months':
+      startDate.setMonth(startDate.getMonth() - 3);
       break;
     case '1year':
-      latestDate.setFullYear(latestDate.getFullYear() - 1);
+      startDate.setFullYear(startDate.getFullYear() - 1);
       break;
-    default:
-      latestDate.setDate(latestDate.getDate() - 7); // Default to 7 days
+    case 'all':
+      return data; // Return all data if 'all' is selected
   }
-  return latestDate;
+  return data.filter(d => new Date(d.Date) >= startDate);
 }
 
 function calculatePercentageChanges(data, latestPrice) {
