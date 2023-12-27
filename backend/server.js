@@ -80,38 +80,30 @@ async function fetchDataFromCollection(collectionName, page, limit) {
   }
 }
 
-app.get('/api/all-data', async (req, res) => {
-  try {
-    const allData = {};
-    const limit = 500; // Max documents per request
-    const maxPages = 6; // Assuming 3000 documents per collection
 
+// Preloaded data variable
+let preloadedData = {};
+
+// Function to preload data
+async function preloadData() {
+  try {
     for (const coinName of coinNames) {
       let coinData = [];
-      for (let page = 1; page <= maxPages; page++) {
-        const data = await fetchDataFromCollection(coinName, page, limit);
+      for (let page = 1; page <= 6; page++) {
+        const data = await fetchDataFromCollection(coinName, page, 500);
         coinData.push(...data.documents);
-
-        // Break if less than limit documents are returned (no more pages)
-        if (data.documents.length < limit) {
-          break;
-        }
+        if (data.documents.length < 500) break;
       }
 
-      // Process data for each coin
-      // Ensure coinData is sorted by date in descending order
       coinData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
 
-      // Calculate percentage changes
       const oneDayChange = calculateChange(coinData, 1);
       const sevenDayChange = calculateChange(coinData, 7);
       const oneMonthChange = calculateChange(coinData, 30);
 
-      // Extract today's data for price, volume, and market cap
       const todayData = coinData[0] || {};
 
-      // Add formatted data for each coin
-      allData[coinName] = {
+      preloadedData[coinName] = {
         name: coinName,
         price: todayData.Close?.toFixed(2) || 'N/A',
         oneDay: oneDayChange,
@@ -121,12 +113,16 @@ app.get('/api/all-data', async (req, res) => {
         marketCap: todayData.Marketcap?.toFixed(2) || 'N/A'
       };
     }
-
-    res.json(allData);
   } catch (err) {
-    console.error('Error:', err);
-    res.status(500).send('Error retrieving data');
+    console.error('Error preloading data:', err);
   }
+}
+
+// Preload data when the server starts
+preloadData();
+
+app.get('/api/all-data', (req, res) => {
+  res.json(preloadedData);
 });
 
 function calculateChange(data, daysBack) {
