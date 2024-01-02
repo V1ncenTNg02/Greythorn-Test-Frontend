@@ -58,7 +58,7 @@ node server.js
 
 ## Database
 **Tools used: MongoDB**
-**<p>Database Structure:
+**<pre>Database Structure:
 -MarketData<br/>
   -Aave<br/>
     -Document1<br/>
@@ -68,4 +68,4 @@ node server.js
     -Document1<br/>
     -Document2<br/>
     -...<br/>
-  -...<br/><p>**
+  -...<br/></pre>**
