@@ -15,7 +15,8 @@ This web is a web app to show data of cryptocurrency market. It contains two pag
 
 ## Frontend
 **Tools Used: React ChartJS**
-'''
+
+```
 **Install DOM:**
 npm install react-router-dom
 
@@ -27,13 +28,12 @@ npm run start
 
 **Build Frontend App:**
 npm run build
-
-'''
+```
 
 
 ## Backend
 **Tools used: Node.js Express CORS Mongoose**
-'''
+```
 **Initialize a new Node.js project:**
 npm init -y
 
@@ -52,9 +52,7 @@ npm install cors
 **Run server:**
 cd backend
 node server.js
-
-
-'''
+```
 
 
 
