@@ -6,7 +6,7 @@ This web is a web app to show data of cryptocurrency market. It contains two pag
 
 **![Home Page:](/resource/HomePage.png)**
 
-**![Detail Page:](resource/CoinDetail1.png)**
+**![Detail Page:](resource/DetailPage1.png)**
 
 ## Frontend
 **Tools Used: React ChartJS**
