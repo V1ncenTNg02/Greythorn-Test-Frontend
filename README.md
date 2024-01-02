@@ -60,8 +60,8 @@ node server.js
 **Tools used: MongoDB**
 **<pre>Database Structure:
 -MarketData<br/>
-  -Aave<br/>
-    -Document1<br/>
+     -Aave<br/>
+         -Document1<br/>
     -Document2<br/>
     -...<br/>
   -BinanceCoin<br/>
