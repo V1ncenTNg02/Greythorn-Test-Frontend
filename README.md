@@ -69,3 +69,10 @@ node server.js
 &nbsp;&nbsp;&nbsp;&nbsp;-Document2<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;-...<br/>
 &nbsp;&nbsp;-...<br/></pre>**
+
+
+## Further Optimization:
+1.Issues on default data display in detail page
+2.Add sorting function on different parameters
+3.Add visual effects
+4.Optimize the data retrieval functions
