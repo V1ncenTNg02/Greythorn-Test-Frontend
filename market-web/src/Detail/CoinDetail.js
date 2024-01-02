@@ -7,6 +7,7 @@ import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 export default function CoinDetail() {
+    //define states and functions
     const { name } = useParams();
     const [coinData, setCoinData] = useState(null);
     const navigate = useNavigate();
@@ -14,13 +15,17 @@ export default function CoinDetail() {
     const [filteredResults, setFilteredResults] = useState([]);
     const dropdownRef = useRef(null);
     const [timeRange, setTimeRange] = useState('7days'); // state for selected time range
-    const [allData, setAllData] = useState(null); 
+    const [allData, setAllData] = useState(null);
 
-    const coins = ["Aave", "BinanceCoin", "Bitcoin", "Cardano", "ChainLink", "Cosmos", "CryptocomCoin", "Dogecoin", "EOS", "Ethereum", "Iota", "Litecoin", "Monero", "NEM", "Polkadot", "Solana", "Stellar", "Tether", "Tron", "USDCoin", "Uniswap", "WrappedBitcoin", "XRP"];
+    //set coin names
+    const coins = ["Aave", "BinanceCoin", "Bitcoin", "Cardano",
+     "ChainLink", "Cosmos", "CryptocomCoin", "Dogecoin", "EOS", "Ethereum",
+      "Iota", "Litecoin", "Monero", "NEM", "Polkadot", "Solana", "Stellar",
+       "Tether", "Tron", "USDCoin", "Uniswap", "WrappedBitcoin", "XRP"];
 
-
+    //retrieve data from backend based on the name, and render the web page
     useEffect(() => {
-        fetch(`http://localhost:5000/api/coin/${name}?timeRange=all`)
+        fetch(`http://market-backend-env.eba-k6mijpth.ap-southeast-2.elasticbeanstalk.com/api/coin/${name}?timeRange=all`)
             .then(response => response.json())
             .then(data => {
                 setCoinData(data); // Set the initially displayed data
@@ -28,8 +33,10 @@ export default function CoinDetail() {
             })
             .catch(error => console.error('Error fetching coin data:', error));
 
+
+        // handle search requirements as described in Home.js
         if (searchTerm !== '') {
-            const filtered = coins.filter(coin => 
+            const filtered = coins.filter(coin =>
                 coin.toLowerCase().includes(searchTerm.toLowerCase())
             );
             setFilteredResults(filtered);
@@ -52,28 +59,33 @@ export default function CoinDetail() {
         };
     }, [name, searchTerm]); // Dependency array includes 'name' and 'searchTerm'
 
+    //Render a loading message or return null if data is not yet loaded
     if (!coinData || !coinData.history || coinData.history.length === 0) {
-        // Render a loading message or return null if data is not yet loaded
+        // 
         return <div>Loading...</div>;
     }
-    
+
+    //handle click on the home icon
     const handleImageClick = () => {
         navigate('/');
     }
 
+    //calculate the width of the price range bar
     const calculateWidth = () => {
         if (!coinData || !coinData.low || !coinData.high || coinData.high <= 0) return 0;
         return (coinData.low / coinData.high) * 100;
     };
 
+    // change style of numbers, green if positive, red if negative, black if zero or invalid
     const getPercentageChangeStyle = (change) => {
         const value = parseFloat(change);
         return {
-          color: value > 0 ? 'green' : value < 0 ? 'red' : 'black', // green if positive, red if negative, black if zero or invalid
+            color: value > 0 ? 'green' : value < 0 ? 'red' : 'black', 
         };
-      };
+    };
 
-      const handleTimeRangeChange = (newTimeRange) => {
+    //handle click on different time range button
+    const handleTimeRangeChange = (newTimeRange) => {
         setTimeRange(newTimeRange);
         if (allData && allData.history) {
             const filteredHistory = filterDataByTimeRange(allData.history, newTimeRange);
@@ -81,6 +93,7 @@ export default function CoinDetail() {
         }
     };
 
+    //filter out data for different time range
     const filterDataByTimeRange = (history, selectedTimeRange) => {
         switch (selectedTimeRange) {
             case '7days':
@@ -95,21 +108,11 @@ export default function CoinDetail() {
                 return history;
         }
     };
-    
+
+    // set the price to the latest date's price
     const currentPrice = coinData.history[0].price;
 
-    const getIconPath = (coinName) => {
-        try {
-            return require(`../resource/icons/${coinName}.webp`);
-        } catch {
-            // Return a default icon or null if specific icon not found
-            return null;
-        }
-    };
-
-
-
-    // Function to prepare chart data based on the selected time range
+    // prepare chart data based on the selected time range
     const prepareChartData = (history) => {
         const chartLabels = history.map(item => item.date.split(' ')[0]);
         const chartData = history.map(item => item.price);
@@ -125,7 +128,7 @@ export default function CoinDetail() {
         };
     };
 
-
+    // get the image of a coin
     const getCoinIcon = (coinName) => {
         try {
             // Dynamically require the image based on the coin name
@@ -136,8 +139,8 @@ export default function CoinDetail() {
         }
     };
 
-    
-    
+
+
 
     return (
         <div id="detailSection">
@@ -147,9 +150,9 @@ export default function CoinDetail() {
                     {filteredResults.map(coin => (
                         <div key={coin} className="dropdown-item">
                             <Link to={`/coin/${coin}`}>
-                                <img 
-                                    src={getCoinIcon(coin)} 
-                                    alt={coin} 
+                                <img
+                                    src={getCoinIcon(coin)}
+                                    alt={coin}
                                     style={{ marginRight: '10px', width: '20px', height: '20px' }}
                                 />
                                 {coin}
@@ -167,11 +170,11 @@ export default function CoinDetail() {
                 {coinData && (
                     <>
                         <div id="coinName">
-                        <img 
-                            src={getIconPath(name)} 
-                            alt={name} 
-                            className='iconImage'
-                        />
+                            <img
+                                src={getCoinIcon(name)}
+                                alt={name}
+                                className='iconImage'
+                            />
                             <p id="Name">{name}</p>
                             <p id="Symbol">{coinData.symbol}</p>
                         </div>
@@ -180,15 +183,15 @@ export default function CoinDetail() {
                             <p id="priceChange" style={getPercentageChangeStyle(coinData['1dChange'])}>{coinData['1dChange']}</p>
                         </div>
                         <div id="rangeBar">
-                            <div style={{ 
-                                height: '100%', 
-                                width: `${calculateWidth()}%`, 
+                            <div style={{
+                                height: '100%',
+                                width: `${calculateWidth()}%`,
                                 background: 'linear-gradient(to right, yellow, green)'
                             }}></div>
                         </div>
-                        <div id = 'highLowContainer'>
-                            <span id ='low'>{coinData?coinData.low.toFixed(2) : 'N/A'}</span>
-                            <span id = 'high'>{coinData?coinData.high.toFixed(2) : 'N/A'}</span>
+                        <div id='highLowContainer'>
+                            <span id='low'>{coinData ? coinData.low.toFixed(2) : 'N/A'}</span>
+                            <span id='high'>{coinData ? coinData.high.toFixed(2) : 'N/A'}</span>
                         </div>
                     </>
                 )}
@@ -207,32 +210,32 @@ export default function CoinDetail() {
                         </div>
                     )}
                 </div>
-                    <table id = 'changeTable'>
-                        <thead>
-                            <tr>
-                                <th>1d</th>
-                                <th>7d</th>
-                                <th>14d</th>
-                                <th>30d</th>
-                                <th>180d</th>
-                                <th>1y</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                {coinData && (
-                                    <>
+                <table id='changeTable'>
+                    <thead>
+                        <tr>
+                            <th>1d</th>
+                            <th>7d</th>
+                            <th>14d</th>
+                            <th>30d</th>
+                            <th>180d</th>
+                            <th>1y</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {coinData && (
+                                <>
                                     <td style={getPercentageChangeStyle(coinData['1dChange'])}>{coinData['1dChange']}</td>
                                     <td style={getPercentageChangeStyle(coinData['7dChange'])}>{coinData['7dChange']}</td>
                                     <td style={getPercentageChangeStyle(coinData['14dChange'])}>{coinData['14dChange']}</td>
                                     <td style={getPercentageChangeStyle(coinData['30dChange'])}>{coinData['30dChange']}</td>
                                     <td style={getPercentageChangeStyle(coinData['180dChange'])}>{coinData['180dChange']}</td>
                                     <td style={getPercentageChangeStyle(coinData['365dChange'])}>{coinData['365dChange']}</td>
-                                    </>
-                                )}
-                            </tr>
-                        </tbody>
-                    </table>
+                                </>
+                            )}
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <img className='homeButton' src={HomeIcon} alt='HomeIcon' onClick={() => handleImageClick()}></img>
         </div>

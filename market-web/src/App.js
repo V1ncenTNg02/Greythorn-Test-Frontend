@@ -1,7 +1,6 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import './style.css';
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 
 import Home from './Home/Home';
 import CoinDetail from './Detail/CoinDetail';

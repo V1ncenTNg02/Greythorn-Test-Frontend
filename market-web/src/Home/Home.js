@@ -5,18 +5,20 @@ import CoinTable from './coinTable';
 import './home.css';
 
 export default function Home() {
+    //define states and ref
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredResults, setFilteredResults] = useState([]);
     const dropdownRef = useRef(null);
 
-    // Assume coins is the list of items you are searching through
-    // This should come from props, context, or an API call
+    //put coin names in a list
     const coins = ["Aave", "BinanceCoin",
     "Bitcoin", "Cardano", "ChainLink", "Cosmos", "CryptocomCoin", "Dogecoin",
     "EOS", "Ethereum", "Iota", "Litecoin", "Monero", "NEM", "Polkadot", "Solana",
     "Stellar", "Tether", "Tron", "USDCoin", "Uniswap", "WrappedBitcoin", "XRP"]
 
+    // handle search requests
     useEffect(() => {
+    //check whether the name of user input matches any sub-pattern of coins' names
         if (searchTerm !== '') {
             const filtered = coins.filter(coin => 
                 coin.toLowerCase().includes(searchTerm.toLowerCase())
@@ -24,8 +26,8 @@ export default function Home() {
             setFilteredResults(filtered);
         } else {
             setFilteredResults([]);
-        }
-    }, [searchTerm]);
+            }
+        }, [searchTerm]);
 
     useEffect(() => {
         // Function to check if click is outside the dropdown
@@ -44,6 +46,7 @@ export default function Home() {
         };
     }, []);
 
+    // get the image of a coin
     const getCoinIcon = (coinName) => {
         try {
             // Dynamically require the image based on the coin name

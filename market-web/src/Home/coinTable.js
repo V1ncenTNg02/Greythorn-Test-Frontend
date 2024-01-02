@@ -3,27 +3,31 @@ import { useNavigate } from 'react-router-dom';
 import HomeIcon from '../resource/home.png';
 
 export default function CoinTable() {
+  //set states and functions
   const [coins, setCoins] = useState([]);
   const navigate = useNavigate();
 
+  // handle click on a row
   const handleRowClick = (coinName) => {
     navigate(`/coin/${coinName}`);
   };
 
+  //handle click on the home icon
   const handleImageClick = () => {
     navigate('/');
   }
 
+  //change the style of data displayed according to the number
   const getPercentageChangeStyle = (change) => {
     const value = parseFloat(change);
     return {
       color: value > 0 ? 'green' : value < 0 ? 'red' : 'black',
     };
   };
-  
 
+  //connect to my backend server, which is deployed with the frontend web on aws elastic beanstalk
   useEffect(() => {
-    fetch('http://localhost:5000/api/all-data')
+    fetch('http://market-backend-env.eba-k6mijpth.ap-southeast-2.elasticbeanstalk.com/api/all-data')
       .then(response => response.json())
       .then(data => {
         const coinsArray = Object.keys(data).map((key) => {
@@ -35,10 +39,11 @@ export default function CoinTable() {
             oneMonth: data[key].oneMonth,
             oneDayVolume: data[key].oneDayVolume,
             marketCap: data[key].marketCap,
-            icon: require(`../resource/icons/${key}.webp`)                   
+            icon: require(`../resource/icons/${key}.webp`)
           };
         });
-
+        
+        //default ordering: sort the data returned based on the market cap
         coinsArray.sort((a, b) => parseFloat(b.marketCap) - parseFloat(a.marketCap));
         setCoins(coinsArray);
       })
@@ -64,7 +69,7 @@ export default function CoinTable() {
           {coins.map((coin, index) => (
             <tr key={coin.name} className='tableRow' onClick={() => handleRowClick(coin.name)}>
               <td>{index + 1}</td>
-              <td id = 'iconName'>
+              <td id='iconName'>
                 <img src={coin.icon} alt={`${coin.name} icon`} className='iconImage' />
                 {coin.name}
               </td>

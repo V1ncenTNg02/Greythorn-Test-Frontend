@@ -1,0 +1,39 @@
+{
+  "files": {
+    "main.css": "/static/css/main.6563366b.css",
+    "main.js": "/static/js/main.1b5a992a.js",
+    "static/js/787.b1a55dd9.chunk.js": "/static/js/787.b1a55dd9.chunk.js",
+    "static/media/home.png": "/static/media/home.1b0d6b82b00253a1b913.png",
+    "static/media/Aave.webp": "/static/media/Aave.6c8af80bb390b56a714b.webp",
+    "static/media/WrappedBitcoin.webp": "/static/media/WrappedBitcoin.893424c8462b6de19499.webp",
+    "static/media/Dogecoin.webp": "/static/media/Dogecoin.37099d1037d90ceea7c2.webp",
+    "static/media/NEM.webp": "/static/media/NEM.77b2d69835732ca41581.webp",
+    "static/media/Cardano.webp": "/static/media/Cardano.b8bdc7d4660880d60304.webp",
+    "static/media/CryptocomCoin.webp": "/static/media/CryptocomCoin.f65db3f3d3aa706fd820.webp",
+    "static/media/USDCoin.webp": "/static/media/USDCoin.254bffbb6317c802dbf2.webp",
+    "static/media/Bitcoin.webp": "/static/media/Bitcoin.e6c38422db7c12bd9526.webp",
+    "index.html": "/index.html",
+    "static/media/EOS.webp": "/static/media/EOS.f115c414529edd17c269.webp",
+    "static/media/Monero.webp": "/static/media/Monero.a106e5d32c453e4e28b3.webp",
+    "static/media/Cosmos.webp": "/static/media/Cosmos.4a542f5f31a5fd31ded8.webp",
+    "static/media/ChainLink.webp": "/static/media/ChainLink.4d5ded70690690d78f30.webp",
+    "static/media/Tether.webp": "/static/media/Tether.b2bc7aa9314968178922.webp",
+    "static/media/Solana.webp": "/static/media/Solana.4c6ec5d6c87769d85baa.webp",
+    "static/media/Iota.webp": "/static/media/Iota.cea188dd38f4afd85af6.webp",
+    "static/media/Ethereum.webp": "/static/media/Ethereum.51c71b9bea74e1f22c4d.webp",
+    "static/media/Tron.webp": "/static/media/Tron.d2131969f4fb0bea71c1.webp",
+    "static/media/BinanceCoin.webp": "/static/media/BinanceCoin.385694804d0c20186859.webp",
+    "static/media/Stellar.webp": "/static/media/Stellar.fd6de81aa98eb6d511eb.webp",
+    "static/media/Litecoin.webp": "/static/media/Litecoin.c5365b0b5d9f10f0f197.webp",
+    "static/media/XRP.webp": "/static/media/XRP.1b5b64a657e0753179f7.webp",
+    "static/media/Uniswap.webp": "/static/media/Uniswap.12d707dbfec920eace9c.webp",
+    "static/media/Polkadot.webp": "/static/media/Polkadot.7da813630d086589ccb4.webp",
+    "main.6563366b.css.map": "/static/css/main.6563366b.css.map",
+    "main.1b5a992a.js.map": "/static/js/main.1b5a992a.js.map",
+    "787.b1a55dd9.chunk.js.map": "/static/js/787.b1a55dd9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6563366b.css",
+    "static/js/main.1b5a992a.js"
+  ]
+}
