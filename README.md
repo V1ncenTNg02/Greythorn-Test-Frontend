@@ -11,7 +11,7 @@ This web is a web app to show data of cryptocurrency market. It contains two pag
 
 **Detail Page:**
 ![detail page1](/resource/DetailPage1.png)
-![detail page2](/resource/DetailPage2.png)
+![detail page2](/resource/DetailPage.png)
 
 ## Frontend
 **Tools Used: React ChartJS**
