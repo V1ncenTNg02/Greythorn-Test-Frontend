@@ -4,9 +4,9 @@ This web is a web app to show data of cryptocurrency market. It contains two pag
 
 ***[Link to the web](http://market-backend-env.eba-k6mijpth.ap-southeast-2.elasticbeanstalk.com/)***
 
-**Home Page:**
+**![Home Page:]()**
 
-**Detail Page:**
+**![Detail Page:]()**
 
 ## Frontend
 **Tools Used: React ChartJS**
