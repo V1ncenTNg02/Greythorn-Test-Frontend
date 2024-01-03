@@ -72,7 +72,7 @@ node server.js
 
 
 ## Further Optimization:
-1.Issues on default data display in detail page
-2.Add sorting function on different parameters
-3.Add visual effects
-4.Optimize the data retrieval functions
+<p>1.Issues on default data display in detail page<br/>
+2.Add sorting function on different parameters<br/>
+3.Add visual effects<br/>
+4.Optimize the data retrieval functions</p>
